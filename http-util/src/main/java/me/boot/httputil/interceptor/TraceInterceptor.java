@@ -8,12 +8,12 @@ import feign.Retryer;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
 import feign.form.spring.SpringFormEncoder;
-import java.util.Date;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.base.constant.Constants;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.cloud.openfeign.support.FeignHttpMessageConverters;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ public class TraceInterceptor implements RequestInterceptor {
      */
     @Bean
     public Retryer feignRetryer() {
-        //最大请求次数为5，初始间隔时间为100ms，下次间隔时间1.5倍递增，重试间最大间隔时间为1s，
+        // 最大请求次数为5，初始间隔时间为100ms，下次间隔时间1.5倍递增，重试间最大间隔时间为1s，
         return new Retryer.Default();
     }
 
@@ -48,21 +48,21 @@ public class TraceInterceptor implements RequestInterceptor {
             if (response.status() == HttpStatus.TOO_MANY_REQUESTS.value()) {
                 log.warn("Too many requests, ready retry");
                 throw new RetryableException(response.status(), exception.getMessage(),
-                    response.request().httpMethod(), exception, new Date(), response.request());
+                    response.request().httpMethod(), exception, 5L, response.request());
             }
 
-//            return new ErrorDecoder.Default().decode(key, response);
+            // return new ErrorDecoder.Default().decode(key, response);
             return exception;
         };
     }
 
     /**
-     *  form-url-encoded 编码器
+     * form-url-encoded 编码器
      */
     @Bean
-    public Encoder formEncoder(ObjectFactory<HttpMessageConverters> converters) {
-        return new SpringFormEncoder(new SpringEncoder(converters));
+    public Encoder formEncoder(ObjectFactory<FeignHttpMessageConverters> converters) {
+        return new SpringFormEncoder(new SpringEncoder(
+            (ObjectProvider<FeignHttpMessageConverters>) converters));
     }
-
 
 }

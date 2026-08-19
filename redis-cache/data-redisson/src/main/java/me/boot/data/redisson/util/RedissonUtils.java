@@ -6,14 +6,14 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import me.boot.base.context.SpringContextHolder;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
+import org.jspecify.annotations.NonNull;
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RBucket;
 import org.redisson.api.RLock;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
-import org.springframework.lang.NonNull;
 
 /**
  * util
@@ -64,7 +64,7 @@ public abstract class RedissonUtils {
 
 
     private static String normalize(String key) {
-        return StringUtils.prependIfMissing(key, REDIS_KEY_PREFIX);
+        return Strings.CS.prependIfMissing(key, REDIS_KEY_PREFIX);
     }
 
     /**

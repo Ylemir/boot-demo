@@ -2,8 +2,8 @@ package me.boot.minio;
 
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
+import jakarta.annotation.Resource;
 import java.util.List;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.minio.util.MinioService;
 import org.apache.commons.io.FileUtils;

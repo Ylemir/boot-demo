@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.lang.Nullable;
 
 /**
  * AutoSpecificationExecutor
@@ -15,23 +14,23 @@ import org.springframework.lang.Nullable;
  **/
 public interface AutoSpecificationExecutor<T> extends JpaSpecificationExecutor<T> {
 
-    default Optional<T> findOne(@Nullable Object object) {
+    default Optional<T> findOne(Object object) {
         return findOne(QuerySpecification.of(object));
     }
 
-    default List<T> findAll(@Nullable Object object) {
+    default List<T> findAll(Object object) {
         return findAll(QuerySpecification.of(object));
     }
 
-    default Page<T> findAll(@Nullable Object object, Pageable pageable) {
+    default Page<T> findAll(Object object, Pageable pageable) {
         return findAll(QuerySpecification.of(object), pageable);
     }
 
-    default List<T> findAll(@Nullable Object object, Sort sort) {
+    default List<T> findAll(Object object, Sort sort) {
         return findAll(QuerySpecification.of(object), sort);
     }
 
-    default long count(@Nullable Object object) {
+    default long count(Object object) {
         return count(QuerySpecification.of(object));
     }
 

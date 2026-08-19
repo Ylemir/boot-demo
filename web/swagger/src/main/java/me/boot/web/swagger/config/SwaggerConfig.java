@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import lombok.Data;
 import me.boot.base.constant.Constants;
-import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
@@ -48,8 +48,8 @@ public class SwaggerConfig {
             new SecurityScheme().name(securitySchemeName).type(SecurityScheme.Type.HTTP)
                 .scheme("bearer").bearerFormat("JWT"));
 
-//            .addSecuritySchemes("basicScheme",
-//            new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic"));
+           // .addSecuritySchemes("basicScheme",
+           // new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic"));
 
         BiConsumer<String, SecurityScheme.In> addSecurityScheme = (item, ins) -> components.addSecuritySchemes(
             item, new SecurityScheme().type(Type.APIKEY).name(item).in(ins));
@@ -74,7 +74,7 @@ public class SwaggerConfig {
     }
 
 
-//    @Bean
+    // @Bean
     public GroupedOpenApi binApi() {
         return GroupedOpenApi.builder().group("Http Bin").pathsToMatch("/bin/**").build();
     }

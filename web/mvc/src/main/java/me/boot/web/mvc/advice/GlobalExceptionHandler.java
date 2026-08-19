@@ -1,11 +1,10 @@
 package me.boot.web.mvc.advice;
 
+import jakarta.servlet.ServletException;
+import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import javax.servlet.ServletException;
-import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.base.dto.SingleResult;
 import org.springframework.http.HttpStatus;
@@ -38,8 +37,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({BindException.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     protected SingleResult<?> handleBindException(BindException ex) {
-        List<Map<String, Object>> list =
-            ex.getFieldErrors().stream().map(this::fieldErrorToMap).collect(Collectors.toList());
+        List<Map<String, Object>> list = ex.getFieldErrors().stream().map(this::fieldErrorToMap)
+            .toList();
         log.warn("bean validate exception: {}", ex.getMessage());
         return SingleResult.failure("Valid bean error: " + list);
     }
@@ -67,7 +66,7 @@ public class GlobalExceptionHandler {
      * http请求体格式转换异常
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     public SingleResult<?> handleHttpMessageNotReadableException(
         HttpMessageNotReadableException ex) {
         log.warn("Invalid Http message", ex);

@@ -1,13 +1,13 @@
 package me.boot.datajpa.criteria.util;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.datajpa.criteria.annotation.QueryCriteria;
@@ -123,7 +123,7 @@ public abstract class QueryPredicateUtils {
         if (ObjectUtils.isEmpty(value)) {
             return null;
         }
-        QueryCriteria queryCriteria = ObjectUtils.defaultIfNull(
+        QueryCriteria queryCriteria = ObjectUtils.getIfNull(
             field.getAnnotation(QueryCriteria.class), defaultCriteria);
         String queryKey = StringUtils.defaultIfBlank(queryCriteria.name(), field.getName());
         return new QueryCriteriaProperty(queryKey, queryCriteria.operation(), value,

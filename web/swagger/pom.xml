@@ -6,7 +6,7 @@
   <parent>
     <groupId>me.boot</groupId>
     <artifactId>web</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>swagger</artifactId>
@@ -15,9 +15,10 @@
 
     <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.7.0</version>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>3.1.0</version>
     </dependency>
+
 
   </dependencies>
 

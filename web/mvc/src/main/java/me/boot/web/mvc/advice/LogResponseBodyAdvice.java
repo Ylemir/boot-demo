@@ -2,6 +2,7 @@ package me.boot.web.mvc.advice;
 
 import java.lang.reflect.Method;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @since 2023/08/06
  */
 @Slf4j
+@NullMarked
 //@ControllerAdvice
 public class LogResponseBodyAdvice implements ResponseBodyAdvice {
 

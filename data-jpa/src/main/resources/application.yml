@@ -13,14 +13,11 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-        # 默认表名及字段全小写下划线分隔命名策略
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-#      use-new-id-generator-mappings: true
+     # use-new-id-generator-mappings: true
     open-in-view: true
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-        dialect: org.sqlite.hibernate.dialect.SQLiteDialect
+        dialect: org.hibernate.community.dialect.SQLiteDialect
         new-generator-mappings: false
         format-sql: true
         show-sql: true
@@ -33,8 +30,11 @@ spring:
 #    password: ${DB_PWD:mysql8}
 
   datasource:
-    driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite::resource:db/boot.db
+    # driver-class-name: org.sqlite.JDBC
+    # url: jdbc:sqlite::resource:db/boot.db
+    url: jdbc:h2:./audit-db;NON_KEYWORDS=USER
+    username: sa
+    driverClassName: org.h2.Driver
 
     hikari:
     # 连接数 = ((cpu核数 * 2) + 磁盘有效主轴数)

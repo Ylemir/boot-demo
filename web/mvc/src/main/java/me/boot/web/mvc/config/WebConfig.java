@@ -20,7 +20,6 @@ import org.springframework.web.servlet.function.ServerResponse;
 @Configuration
 public class WebConfig {
 
-
 //    @Bean
     public CommonsRequestLoggingFilter logFilter() {
         CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();

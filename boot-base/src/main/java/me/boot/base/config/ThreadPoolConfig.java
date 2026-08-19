@@ -3,12 +3,14 @@ package me.boot.base.config;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
-import org.springframework.boot.task.TaskExecutorBuilder;
-import org.springframework.boot.task.TaskExecutorCustomizer;
+import org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder;
+import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
+import org.springframework.boot.task.ThreadPoolTaskExecutorCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -27,13 +29,13 @@ public class ThreadPoolConfig {
     private final int keepAliveSeconds = 30;
 
     @Bean
-    public TaskExecutorBuilder taskExecutorBuilder(TaskExecutionProperties properties,
-        ObjectProvider<TaskExecutorCustomizer> taskExecutorCustomizers,
+    public ThreadPoolTaskExecutorBuilder taskExecutorBuilder(TaskExecutionProperties properties,
+        ObjectProvider<ThreadPoolTaskExecutorCustomizer> taskExecutorCustomizers,
         ObjectProvider<TaskDecorator> taskDecorator) {
         TaskExecutionProperties.Pool pool = properties.getPool();
-        TaskExecutorBuilder builder = new TaskExecutorBuilder();
+        ThreadPoolTaskExecutorBuilder builder = new ThreadPoolTaskExecutorBuilder();
         TaskExecutionProperties.Shutdown shutdown = properties.getShutdown();
-        Stream<TaskExecutorCustomizer> customizerStream = taskExecutorCustomizers.orderedStream();
+        Stream<ThreadPoolTaskExecutorCustomizer> customizerStream = taskExecutorCustomizers.orderedStream();
         builder = builder.queueCapacity(pool.getQueueCapacity());
         builder = builder.corePoolSize(pool.getCoreSize());
         builder = builder.maxPoolSize(pool.getMaxSize());
@@ -49,14 +51,13 @@ public class ThreadPoolConfig {
 
     @Primary
     @Bean(name = "asyncTaskExecutor")
-    public ThreadPoolTaskExecutor asyncTaskExecutor(TaskExecutorBuilder builder) {
+    public SimpleAsyncTaskExecutor asyncTaskExecutor(SimpleAsyncTaskExecutorBuilder builder) {
         return builder.build();
     }
 
-
     @Lazy
     @Bean(name = "singleTaskExecutor")
-    public ThreadPoolTaskExecutor singleTaskExecutor(TaskExecutorBuilder builder) {
+    public ThreadPoolTaskExecutor singleTaskExecutor(ThreadPoolTaskExecutorBuilder builder) {
         return builder.corePoolSize(1).maxPoolSize(1).threadNamePrefix("singleTask-").build();
     }
 }

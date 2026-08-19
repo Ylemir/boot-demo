@@ -2,9 +2,9 @@ package me.boot.datajpa;
 
 import com.google.common.collect.ImmutableList;
 import com.zaxxer.hikari.HikariConfig;
+import jakarta.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
-import javax.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import me.boot.datajpa.constant.Gender;

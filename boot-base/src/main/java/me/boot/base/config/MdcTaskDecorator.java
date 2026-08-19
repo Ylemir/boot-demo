@@ -6,9 +6,9 @@ import me.boot.base.constant.Constants;
 import me.boot.base.context.BootContext;
 import me.boot.base.context.BootContextHolder;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NullMarked;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,18 +17,19 @@ import org.springframework.stereotype.Component;
  * @since 2023/02/19
  */
 @Component
+@NullMarked
 public class MdcTaskDecorator implements TaskDecorator {
 
     @Override
-    public @NonNull Runnable decorate(@NonNull Runnable runnable) {
+    public Runnable decorate(Runnable runnable) {
         Map<String, String> mdcMap = MDC.getCopyOfContextMap();
         BootContext context = BootContextHolder.getContext();
-//    RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        // RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
         return () -> {
             try {
                 BootContextHolder.setContext(context);
                 MDC.setContextMap(mdcMap);
-//        RequestContextHolder.setRequestAttributes(attributes);
+                // RequestContextHolder.setRequestAttributes(attributes);
                 String traceId = MDC.get(Constants.TRACE_ID);
                 if (StringUtils.isBlank(traceId)) {
                     traceId = UUID.randomUUID().toString();
@@ -38,7 +39,7 @@ public class MdcTaskDecorator implements TaskDecorator {
             } finally {
                 MDC.clear();
                 BootContextHolder.clearContext();
-//        RequestContextHolder.resetRequestAttributes();
+                // RequestContextHolder.resetRequestAttributes();
             }
         };
     }

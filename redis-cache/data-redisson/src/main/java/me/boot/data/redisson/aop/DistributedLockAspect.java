@@ -1,8 +1,8 @@
 package me.boot.data.redisson.aop;
 
+import jakarta.annotation.Resource;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.base.annotation.DistributedLock;
 import me.boot.base.parser.SpelParser;

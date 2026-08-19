@@ -6,7 +6,7 @@
   <parent>
     <groupId>me.boot</groupId>
     <artifactId>boot-parent</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>jwt</artifactId>
@@ -15,13 +15,13 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.37.3</version>
+      <version>10.9.1</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.ulisesbocchio</groupId>
       <artifactId>jasypt-spring-boot-starter</artifactId>
-      <version>3.0.5</version>
+      <version>4.0.4</version>
     </dependency>
 
   </dependencies>

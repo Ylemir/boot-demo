@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
  * @since 2023/08/06
  */
 @Slf4j
+@NullMarked
 //@ControllerAdvice
 public class LogRequestBodyAdvice implements RequestBodyAdvice {
 

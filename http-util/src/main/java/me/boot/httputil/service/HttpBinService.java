@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@FeignClient(name = "${boot.name}", url = "http://httpbin.org", configuration = TraceInterceptor.class)
+@FeignClient(name = "${boot.name}", url = "http://httpbin.io", configuration = TraceInterceptor.class)
 public interface HttpBinService {
 
     @GetMapping("/uuid")

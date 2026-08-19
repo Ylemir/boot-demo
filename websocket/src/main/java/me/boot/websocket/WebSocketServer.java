@@ -1,16 +1,16 @@
 package me.boot.websocket;
 
+import jakarta.websocket.OnClose;
+import jakarta.websocket.OnError;
+import jakarta.websocket.OnMessage;
+import jakarta.websocket.OnOpen;
+import jakarta.websocket.Session;
+import jakarta.websocket.server.PathParam;
+import jakarta.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -49,11 +49,11 @@ public class WebSocketServer {
         this.userId = userId;
         webSocketMap.remove(userId);
         webSocketMap.put(userId, this);
-        log.info("用户连接:" + userId + ",当前在线人数为:" + webSocketMap.size());
+        log.info("用户连接: {},当前在线人数为: {}", userId, webSocketMap.size());
         try {
             sendMessage("连接成功！");
         } catch (IOException e) {
-            log.error("用户:" + userId + ",网络异常!!!!!!");
+            log.error("用户: {},网络异常!!!!!!", userId);
         }
     }
 
@@ -63,7 +63,7 @@ public class WebSocketServer {
     @OnClose
     public void onClose() {
         webSocketMap.remove(userId);
-        log.info("用户退出:" + userId + ",当前在线人数为:" + webSocketMap.size());
+        log.info("用户退出: {},当前在线人数为: {}", userId, webSocketMap.size());
     }
 
     /**
@@ -73,7 +73,7 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message) {
-        log.info("用户消息:" + userId + ",报文:" + message);
+        log.info("用户消息: {},报文: {}", userId, message);
         if (StringUtils.isNotBlank(message)) {
             try {
                 switch (message) {
@@ -109,8 +109,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error("用户错误:" + this.userId + ",原因:" + error.getMessage());
-        error.printStackTrace();
+        log.error("用户错误: {}", this.userId, error);
     }
 
     /**

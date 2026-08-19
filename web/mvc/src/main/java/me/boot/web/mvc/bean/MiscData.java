@@ -1,14 +1,14 @@
 package me.boot.web.mvc.bean;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import me.boot.base.util.DateUtils;
 import me.boot.web.mvc.validation.SizePlus;

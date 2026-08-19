@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.base.annotation.LogRecord;
 import me.boot.base.annotation.RateLimit;
 import me.boot.base.annotation.RateLimit.Strategy;
+import me.boot.httputil.config.HttpsClientConfig;
 import me.boot.httputil.service.HttpBinService;
 import me.boot.jwt.service.JwtService;
 import me.boot.web.mvc.bean.MiscData;
@@ -47,7 +48,10 @@ public class HttpBinController {
 
     private final JwtService jwtService;
 
+    private final HttpsClientConfig httpsClientConfig;
+
     //    @DistributedLock(leaseTime = "10s")
+    @LogRecord(content = "#{@httpsClientConfig.readTimeout + ' ==> ' + @httpsClientConfig.getWriteTimeout()}")
     @RateLimit(qps = 2, timeout = "", strategy = Strategy.TOTAL)
     @Operation(summary = "Generate UUID")
     @ApiResponse(responseCode = "200", description = "UUID")
@@ -67,7 +71,7 @@ public class HttpBinController {
     @Operation(summary = "请求体")
     @PutMapping(value = "map")
     public String map(@Valid @RequestBody MiscData body) {
-//        return httpBinService.put(body).toString();
+        // return httpBinService.put(body).toString();
         System.err.println(body);
         return jwtService.sign(ImmutableMap.of("body", body.getUrl()));
     }

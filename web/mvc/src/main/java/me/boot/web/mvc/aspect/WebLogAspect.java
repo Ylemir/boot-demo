@@ -1,8 +1,8 @@
 package me.boot.web.mvc.aspect;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.web.mvc.util.RequestContextUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -41,10 +41,7 @@ public class WebLogAspect {
     @Before("requestLog()")
     public void requestBefore() {
         HttpServletRequest request = RequestContextUtils.getContextRequest();
-        log.info(
-            "Received {} - {} request {}",
-            request.getRemoteAddr(),
-            request.getMethod(),
+        log.info("Received {} - {} request {}", request.getRemoteAddr(), request.getMethod(),
             ServletUriComponentsBuilder.fromRequest(request).encode().build());
     }
 
@@ -52,11 +49,8 @@ public class WebLogAspect {
     @Before("requestLog() || methodLog()")
     public void doBefore(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        log.info(
-            "Ready into {} . {} - ARGS: (name) {} - (value) {}",
-            signature.getDeclaringTypeName(),
-            signature.getName(),
-            signature.getParameterNames(),
+        log.info("Ready into {} . {} - ARGS: (name) {} - (value) {}",
+            signature.getDeclaringTypeName(), signature.getName(), signature.getParameterNames(),
             Arrays.toString(joinPoint.getArgs()));
     }
 
@@ -79,15 +73,10 @@ public class WebLogAspect {
         } finally {
             stopWatch.stop();
             String methodName = proceedingJoinPoint.getSignature().getName();
-            log.info(
-                "{} - {} complete, it takes {}ms",
-                proceedingJoinPoint.getTarget(),
-                methodName,
-                stopWatch.getLastTaskTimeMillis());
-            log.info(
-                "{} return result -> {}",
-                methodName,
-                StringUtils.abbreviate(Objects.toString(obj) , 1000));
+            log.info("{} - {} complete, it takes {}ms", proceedingJoinPoint.getTarget(), methodName,
+                stopWatch.lastTaskInfo());
+            log.info("{} return result -> {}", methodName,
+                StringUtils.abbreviate(Objects.toString(obj), 1000));
         }
     }
 
@@ -100,10 +89,7 @@ public class WebLogAspect {
     // 异常通知
     @AfterThrowing(value = "requestLog()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
-        log.info(
-            "{} - {} execute error {}",
-            joinPoint.getTarget(),
-            joinPoint.getSignature().getName(),
-            e.getMessage());
+        log.info("{} - {} execute error {}", joinPoint.getTarget(),
+            joinPoint.getSignature().getName(), e.getMessage());
     }
 }

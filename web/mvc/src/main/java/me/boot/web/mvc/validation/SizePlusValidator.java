@@ -1,10 +1,10 @@
 package me.boot.web.mvc.validation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 import java.util.Map;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 import me.boot.base.context.SpringContextHolder;
 import org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorContextImpl;
@@ -28,7 +28,7 @@ public class SizePlusValidator implements ConstraintValidator<SizePlus, Object> 
     private boolean nullable;
 
     private final PropertyPlaceholderHelper helper = new PropertyPlaceholderHelper("${", "}", ":",
-        true);
+        null, true);
 
     public void initialize(SizePlus parameters) {
         this.min = parseValue(parameters.min());
@@ -50,7 +50,7 @@ public class SizePlusValidator implements ConstraintValidator<SizePlus, Object> 
         } else if (input instanceof Collection) {
             length = ((Collection<?>) input).size();
         } else if (input instanceof Map) {
-            length = ((Map<?,?>) input).size();
+            length = ((Map<?, ?>) input).size();
         } else {
             log.error("Invalid type for SizePlus validator: {}", input.getClass());
             return false;

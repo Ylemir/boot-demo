@@ -69,9 +69,9 @@ public class CloseHttpUtil implements HttpsUtil {
         log.info("response body:{}", responseEntity);
         return responseEntity;
 
-//    if (status >= HttpStatus.SC_SUCCESS && status < HttpStatus.SC_REDIRECTION) {
-//      throw new ClientProtocolException("Unexpected response status: " + status);
-//    }
+       // if (status >= HttpStatus.SC_SUCCESS && status < HttpStatus.SC_REDIRECTION) {
+       //   throw new ClientProtocolException("Unexpected response status: " + status);
+       // }
     };
 
     @Override

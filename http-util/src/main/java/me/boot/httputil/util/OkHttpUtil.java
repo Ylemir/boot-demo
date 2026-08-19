@@ -146,16 +146,14 @@ public class OkHttpUtil implements HttpsUtil {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         buffer.append("request failed: ").append(e.getMessage());
-                        e.printStackTrace();
+                        log.warn("request failed ", e);
                     }
 
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response)
                         throws IOException {
                         ResponseBody body = response.body();
-                        if (body != null) {
-                            buffer.append(body.string());
-                        }
+                        buffer.append(body.string());
                         getSemaphoreInstance().release();
                     }
                 });

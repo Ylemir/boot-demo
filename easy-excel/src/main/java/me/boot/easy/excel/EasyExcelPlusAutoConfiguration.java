@@ -1,9 +1,8 @@
 package me.boot.easy.excel;
 
-
 import com.alibaba.excel.util.ListUtils;
+import jakarta.annotation.PostConstruct;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import me.boot.easy.excel.handler.ExcelReturnValueHandler;
 import me.boot.easy.excel.resolver.ExcelParamResolver;
@@ -21,7 +20,6 @@ import org.springframework.validation.Validator;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-
 
 @RequiredArgsConstructor
 @AutoConfiguration
@@ -43,8 +41,7 @@ public class EasyExcelPlusAutoConfiguration {
     public void setReturnValueHandlers() {
         List<HandlerMethodReturnValueHandler> newHandlers = ListUtils.newArrayList(
             excelReturnValueHandler());
-        List<HandlerMethodReturnValueHandler> returnValueHandlers = requestMappingHandlerAdapter
-            .getReturnValueHandlers();
+        List<HandlerMethodReturnValueHandler> returnValueHandlers = requestMappingHandlerAdapter.getReturnValueHandlers();
         newHandlers.addAll(returnValueHandlers);
         requestMappingHandlerAdapter.setReturnValueHandlers(newHandlers);
     }
@@ -69,8 +66,7 @@ public class EasyExcelPlusAutoConfiguration {
     @Autowired
     public void setArgumentResolvers(RequestMappingHandlerAdapter adapter) {
         List<HandlerMethodArgumentResolver> argumentResolvers = ListUtils.newArrayList(
-            excelDataResolver(), new ExcelValidErrorsResolver()
-        );
+            excelDataResolver(), new ExcelValidErrorsResolver());
         argumentResolvers.addAll(adapter.getArgumentResolvers());
         adapter.setArgumentResolvers(argumentResolvers);
     }

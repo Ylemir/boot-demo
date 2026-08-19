@@ -2,9 +2,9 @@ package me.boot.datajpa.converter;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import java.util.Objects;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import org.apache.commons.lang3.StringUtils;
 
 /**

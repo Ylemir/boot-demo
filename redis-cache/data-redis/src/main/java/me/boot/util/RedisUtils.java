@@ -1,11 +1,13 @@
 package me.boot.util;
 
+import jakarta.annotation.Resource;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,8 +24,8 @@ public class RedisUtils {
     /**
      * 给一个指定的 key 值附加过期时间
      */
-    public Boolean expire(String key, long second) {
-        return redisTemplate.expire(key, second, TimeUnit.SECONDS);
+    public Boolean expire(String key, Duration duration) {
+        return redisTemplate.expire(key, Expiration.from(duration));
     }
 
     /**
@@ -68,13 +70,13 @@ public class RedisUtils {
     /**
      * 将值放入缓存并设置时间
      *
-     * @param key   键
-     * @param value 值
-     * @param time  时间(秒) -1为无期限
+     * @param key      键
+     * @param value    值
+     * @param duration duration
      */
-    public void set(String key, Object value, long time) {
-        if (time > 0) {
-            redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+    public void set(String key, Object value, Duration duration) {
+        if (duration != null) {
+            redisTemplate.opsForValue().set(key, value, duration);
         } else {
             redisTemplate.opsForValue().set(key, value);
         }
@@ -283,8 +285,8 @@ public class RedisUtils {
     /**
      * 获取指定 hash 下面的 键值对 数量
      *
-     * @param key
-     * @return
+     * @param key key
+     * @return {@link Long }
      */
     public Long hashSize(String key) {
         return redisTemplate.opsForHash().size(key);
@@ -365,8 +367,8 @@ public class RedisUtils {
     /**
      * 移除集合中左边的元素在等待的时间里，如果超过等待的时间仍没有元素则退出。
      */
-    public void leftPop(String key, long timeout, TimeUnit unit) {
-        redisTemplate.opsForList().leftPop(key, timeout, unit);
+    public void leftPop(String key, Duration duration) {
+        redisTemplate.opsForList().leftPop(key, duration);
     }
 
     /**
@@ -379,7 +381,7 @@ public class RedisUtils {
     /**
      * 移除集合中右边的元素在等待的时间里，如果超过等待的时间仍没有元素则退出。
      */
-    public void rightPop(String key, long timeout, TimeUnit unit) {
-        redisTemplate.opsForList().rightPop(key, timeout, unit);
+    public void rightPop(String key, Duration duration) {
+        redisTemplate.opsForList().rightPop(key, duration);
     }
 }

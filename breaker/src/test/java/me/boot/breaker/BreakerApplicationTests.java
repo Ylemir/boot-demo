@@ -1,6 +1,6 @@
 package me.boot.breaker;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import me.boot.breaker.service.AlbumService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

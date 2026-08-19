@@ -9,10 +9,11 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 
 /**
- * @description
+ * redis message config
+ *
  * @since 2023/07/02
  **/
 @Configuration
@@ -39,7 +40,7 @@ public class RedisMessageConfig {
      */
     @Bean
     public MessageListenerAdapter listenerAdapter(MessageReceiver receiver,
-        GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer) {
+        GenericJacksonJsonRedisSerializer jackson2JsonRedisSerializer) {
         MessageListenerAdapter receiveMessage = new MessageListenerAdapter(receiver,
             "receiveMessage");
         receiveMessage.setSerializer(jackson2JsonRedisSerializer);

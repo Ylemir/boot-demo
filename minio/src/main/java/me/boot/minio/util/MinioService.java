@@ -5,6 +5,7 @@ import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
 import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.Http.Method;
 import io.minio.ListObjectsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
@@ -13,9 +14,8 @@ import io.minio.PutObjectArgs;
 import io.minio.RemoveBucketArgs;
 import io.minio.RemoveObjectArgs;
 import io.minio.Result;
-import io.minio.http.Method;
-import io.minio.messages.Bucket;
 import io.minio.messages.Item;
+import io.minio.messages.ListAllMyBucketsResult;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class MinioService {
      * 获取全部bucket
      */
     @SneakyThrows
-    public List<Bucket> listBuckets() {
+    public List<ListAllMyBucketsResult.Bucket> listBuckets() {
         return minioClient.listBuckets();
     }
 
@@ -119,7 +119,7 @@ public class MinioService {
             PutObjectArgs objectArgs = PutObjectArgs.builder()
                 .bucket(minioConfig.getBucketName())
                 .object(file.getName())
-                .stream(fileInputStream, FileUtils.sizeOf(file), -1)
+                .stream(fileInputStream, FileUtils.sizeOf(file), (long) -1)
                 .build();
 
             //文件名称相同会覆盖

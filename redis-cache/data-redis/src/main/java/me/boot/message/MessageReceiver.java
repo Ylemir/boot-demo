@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class MessageReceiver {
 
     public void receiveMessage(String message, String channel) {
-        log.info("Receiver ---频道---: " + channel);
-        log.info("Receiver ---消息内容---: " + message);
+        log.info("Receiver ---频道---: {}", channel);
+        log.info("Receiver ---消息内容---: {}", message);
     }
 }

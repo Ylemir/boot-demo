@@ -1,10 +1,10 @@
 package me.boot.web.mvc.validation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorContextImpl;
 
 /**
@@ -39,7 +39,7 @@ public class AnyOfValidator implements ConstraintValidator<AnyOf, String> {
             return this.nullable;
         }
 
-        return this.ignoreCase ? StringUtils.containsAnyIgnoreCase(value, this.legalValues)
-            : StringUtils.containsAny(value, this.legalValues);
+        return this.ignoreCase ? Strings.CI.containsAny(value, this.legalValues)
+            : Strings.CS.containsAny(value, this.legalValues);
     }
 }

@@ -13,7 +13,7 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
         new_generator_mappings: false
         format_sql: true
       show-sql: true

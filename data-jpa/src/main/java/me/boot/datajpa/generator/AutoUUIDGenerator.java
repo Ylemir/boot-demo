@@ -1,9 +1,9 @@
 package me.boot.datajpa.generator;
 
+import jakarta.persistence.Id;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.UUID;
-import javax.persistence.Id;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -25,8 +25,7 @@ public class AutoUUIDGenerator implements IdentifierGenerator {
             Field idField = FieldUtils.getFieldsListWithAnnotation(entity.getClass(),
                 Id.class).get(0);
             Object id = FieldUtils.readField(idField, entity, true);
-            if (id instanceof String) {
-                String idStringValue = (String) id;
+            if (id instanceof String idStringValue) {
                 if (StringUtils.isNotBlank(idStringValue)) {
                     return idStringValue;
                 }

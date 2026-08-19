@@ -1,7 +1,7 @@
 package me.boot.breaker.service;
 
+import jakarta.annotation.Resource;
 import java.util.function.Supplier;
-import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;

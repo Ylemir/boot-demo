@@ -20,7 +20,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -42,7 +41,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * https客户端
  *
- * @date 2023/03/26
+ * @since 2023/03/26
  **/
 @Slf4j
 @Configuration
@@ -61,18 +60,18 @@ public class HttpsClient {
             .setConnectionKeepAlive(TimeValue.ofSeconds(config.keepAliveTimeout))
             .build();
 
-        ConnectionConfig connConfig = ConnectionConfig.custom()
-            .setConnectTimeout(config.connectionTimeout, TimeUnit.SECONDS)
-            .setSocketTimeout(config.connectionTimeout, TimeUnit.SECONDS)
-            .build();
-
-        BasicHttpClientConnectionManager cm = connectionManager();
-        cm.setConnectionConfig(connConfig);
+//        ConnectionConfig connConfig = ConnectionConfig.custom()
+//            .setConnectTimeout(config.connectionTimeout, TimeUnit.SECONDS)
+//            .setSocketTimeout(config.connectionTimeout, TimeUnit.SECONDS)
+//            .build();
+//
+//        BasicHttpClientConnectionManager cm = connectionManager();
+//        cm.setConnectionConfig(connConfig);
 
         return HttpClients.custom()
             .setDefaultHeaders(Collections.emptyList())
             .setDefaultRequestConfig(requestConfig)
-            .setConnectionManager(cm)
+//            .setConnectionManager(cm)
             .build();
     }
 

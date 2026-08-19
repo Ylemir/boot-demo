@@ -1,0 +1,11 @@
+[vars]
+project_version = '0.4.0-SNAPSHOT'
+
+[tasks]
+build = "mvn clean package -Dmaven.test.skip=true"
+dep-check = "mvn versions:display-dependency-updates"
+dep-update = "mvn versions:use-latest-releases"
+
+[tasks.set-version]
+description = 'Set the version of the project'
+run = "mvn versions:set -DnewVersion={{ vars.project_version }}"

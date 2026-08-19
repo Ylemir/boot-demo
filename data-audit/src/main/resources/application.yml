@@ -39,10 +39,8 @@ javers:
   typeSafeValues: false
   initialChanges: true
   terminalChanges: true
-  packagesToScan:
   auditableAspectEnabled: true
   springDataAuditableRepositoryAspectEnabled: true
-  objectAccessHook:
   usePrimitiveDefaults: true
   prettyPrintDateFormats:
     localDateTime: 'yyyy-MM-dd HH:mm:ss'

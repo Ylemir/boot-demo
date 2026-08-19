@@ -1,22 +1,26 @@
 package me.boot.web.mvc.config;
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import me.boot.base.util.DateUtils;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ext.javatime.deser.InstantDeserializer;
+import tools.jackson.databind.ext.javatime.deser.LocalDateDeserializer;
+import tools.jackson.databind.ext.javatime.deser.LocalDateTimeDeserializer;
+import tools.jackson.databind.ext.javatime.deser.LocalTimeDeserializer;
+import tools.jackson.databind.ext.javatime.ser.InstantSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalDateSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalDateTimeSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalTimeSerializer;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * 日期时间转换配置
@@ -41,31 +45,27 @@ public class JacksonConfig {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
-        return builder ->
-        {
-            // 设置java.util.Date时间类的序列化以及反序列化的格式
-            builder.simpleDateFormat(dateTimeFormat);
+    public JsonMapperBuilderCustomizer jacksonCustomizer() {
+        return builder -> {
+            builder.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-            // JSR 310日期时间处理
-            JavaTimeModule javaTimeModule = new JavaTimeModule();
+            final SimpleModule simpleModule = new SimpleModule();
 
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimeFormat);
-            javaTimeModule.addSerializer(LocalDateTime.class,
-                new LocalDateTimeSerializer(dateTimeFormatter));
-            javaTimeModule.addDeserializer(LocalDateTime.class,
-                new LocalDateTimeDeserializer(dateTimeFormatter));
+            // 序列化-日期时间指定格式
+            simpleModule.addSerializer(LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+            simpleModule.addSerializer(LocalDate.class, new LocalDateSerializer(dateFormatter));
+            simpleModule.addSerializer(LocalTime.class, new LocalTimeSerializer(timeFormatter));
+            simpleModule.addSerializer(Instant.class, InstantSerializer.INSTANCE);
 
-            javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(dateFormatter));
-            javaTimeModule.addDeserializer(LocalDate.class,
-                new LocalDateDeserializer(dateFormatter));
-
-            javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(timeFormatter));
-            javaTimeModule.addDeserializer(LocalTime.class,
-                new LocalTimeDeserializer(timeFormatter));
-
-            builder.modules(javaTimeModule);
-
+            // 反序列化-日期时间指定格式
+            simpleModule.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+            simpleModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter));
+            simpleModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(timeFormatter));
+            simpleModule.addDeserializer(Instant.class, InstantDeserializer.INSTANT);
+            builder.addModule(simpleModule);
         };
     }
 }
+

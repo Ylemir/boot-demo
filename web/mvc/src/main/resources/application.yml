@@ -105,4 +105,5 @@ logging:
   level:
     root: info
     web: debug
+    me.boot: debug
 #    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
