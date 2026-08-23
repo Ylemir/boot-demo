@@ -9,8 +9,8 @@ spring:
 
   jpa:
     hibernate:
-      # 自动创建、更新、验证数据库表结构
-      ddl-auto: update
+      # 使用 Flyway 管理数据库版本，关闭 Hibernate 自动建表
+      # ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
      # use-new-id-generator-mappings: true
@@ -23,18 +23,17 @@ spring:
         show-sql: true
         use-sql-comments: true
 
-
 #  datasource:
 #    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:boot}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
 #    username: ${DB_USER:root}
 #    password: ${DB_PWD:mysql8}
 
   datasource:
-    # driver-class-name: org.sqlite.JDBC
-    # url: jdbc:sqlite::resource:db/boot.db
-    url: jdbc:h2:./audit-db;NON_KEYWORDS=USER
-    username: sa
-    driverClassName: org.h2.Driver
+    url: jdbc:sqlite:./data-jpa/db/jpa.db
+    driver-class-name: org.sqlite.JDBC
+    # url: jdbc:h2:./data-jpa/db/jpa.db;NON_KEYWORDS=USER
+    # username: sa
+    # driverClassName: org.h2.Driver
 
     hikari:
     # 连接数 = ((cpu核数 * 2) + 磁盘有效主轴数)
@@ -47,6 +46,26 @@ spring:
         useServerPrepStmts: true
         prepStmtCacheSize: 250
         prepStmtCacheSqlLimit: 2048
+
+  flyway:
+    enabled: true
+    table: flyway_schema_history
+    locations:
+      - classpath:db/migration
+    # ★ SQLite 不支持跨脚本事务，建议关闭整个迁移的事务包裹
+    mixed: true
+
+    # 基线配置
+    baseline-on-migrate: true
+    baseline-version: 0
+    baseline-description: "Initial baseline"
+
+    clean-disabled: true
+    # ★ SQLite 不支持某些默认的锁策略，建议关掉校验重试
+    retry-failures: false
+
+    callback-locations:
+      - classpath:db/callback
 
 logging:
   level:
