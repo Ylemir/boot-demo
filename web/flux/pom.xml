@@ -24,6 +24,12 @@
       <version>${project.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>me.boot</groupId>
+      <artifactId>http-util</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
   </dependencies>
 
 </project>

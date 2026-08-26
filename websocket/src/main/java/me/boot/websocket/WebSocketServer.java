@@ -87,16 +87,16 @@ public class WebSocketServer {
                         sendMessage("receive at " + LocalDateTime.now());
                 }
 
-//        JSONObject jsonObject = JSONObject.parseObject(message);
-//        jsonObject.put("fromUserId", this.userId);
-//        String toUserId = jsonObject.getString("toUserId");
-//        if (!StringUtils.isEmpty(toUserId) && webSocketMap.containsKey(toUserId)) {
-//          webSocketMap.get(toUserId).sendMessage(jsonObject.toJSONString());
-//        } else {
-//          log.error("请求的 userId:" + toUserId + "不在该服务器上");
-//        }
+         // JSONObject jsonObject = JSONObject.parseObject(message);
+         // jsonObject.put("fromUserId", this.userId);
+         // String toUserId = jsonObject.getString("toUserId");
+         // if (!StringUtils.isEmpty(toUserId) && webSocketMap.containsKey(toUserId)) {
+         //   webSocketMap.get(toUserId).sendMessage(jsonObject.toJSONString());
+         // } else {
+         //   log.error("请求的 userId:" + toUserId + "不在该服务器上");
+         // }
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("用户: {},发送消息异常!!!!!!", userId, e);
             }
         }
     }

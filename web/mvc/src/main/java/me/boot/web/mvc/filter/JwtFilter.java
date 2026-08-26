@@ -1,7 +1,5 @@
 package me.boot.web.mvc.filter;
 
-import com.nimbusds.jwt.JWTClaimNames;
-import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 /**
  * JwtInterceptor
@@ -32,9 +29,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    @Resource(name = "handlerExceptionResolver")
-    private HandlerExceptionResolver exceptionResolver;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
         @NotNull HttpServletResponse response,
@@ -43,12 +37,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.isNotBlank(token)) {
             String jwt = StringUtils.removeStart(token, "Bearer ");
             Map<String, Object> payload = jwtService.verify(jwt);
-            long expirationTime = 1000 * (long) payload.get(JWTClaimNames.EXPIRATION_TIME);
-            if (System.currentTimeMillis() > expirationTime) {
-                exceptionResolver.resolveException(request, response,
-                    null, new ServletException("The token has expired"));
-                return;
-            }
             BootContext context = BootContextHolder.getContext();
             context.setProperties(payload);
         }

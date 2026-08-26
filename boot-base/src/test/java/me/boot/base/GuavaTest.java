@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-import me.boot.base.dto.FiledDifference;
+import me.boot.base.dto.FieldDifference;
 import me.boot.base.dto.MultiResult;
 import me.boot.base.dto.PageResult;
 import me.boot.base.util.CommonUtils;
@@ -28,7 +28,7 @@ public class GuavaTest {
         ImmutableMap<String, Integer> m2 = ImmutableMap.of("1", 1, "2", 3,
             "3", 3, "4", 5, "5", 5);
 
-        List<FiledDifference> diff = ObjectDiffUtils.diff(m1, m2);
+        List<FieldDifference> diff = ObjectDiffUtils.diff(m1, m2);
 
         MultiResult<String> before = MultiResult.success(Arrays.asList("1", "1", "2"));
         PageResult<String> after = PageResult.success(Arrays.asList("1", "3", "2"), 5, 1, 1);
@@ -38,13 +38,13 @@ public class GuavaTest {
 
     @Test
     public void diffList() {
-        List<FiledDifference> list = Arrays.asList(new FiledDifference("1", 1, "2"),
-            new FiledDifference("2", 1, "2"),
-            new FiledDifference("3", 1, "2")
+        List<FieldDifference> list = Arrays.asList(new FieldDifference("1", 1, "2"),
+            new FieldDifference("2", 1, "2"),
+            new FieldDifference("3", 1, "2")
         );
-        List<FiledDifference> list2 = Arrays.asList(new FiledDifference("1", 1, "2"),
-            new FiledDifference("2", 2, "2"),
-            new FiledDifference("4", 1, "2")
+        List<FieldDifference> list2 = Arrays.asList(new FieldDifference("1", 1, "2"),
+            new FieldDifference("2", 2, "2"),
+            new FieldDifference("4", 1, "2")
         );
 
         Pair<List<Object>, List<Object>> pair = ObjectDiffUtils.diffList(list, list2, "property");

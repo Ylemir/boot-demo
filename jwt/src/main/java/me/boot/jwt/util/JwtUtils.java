@@ -19,6 +19,7 @@ import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jwt.EncryptedJWT;
+import com.nimbusds.jwt.JWTClaimNames;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.SneakyThrows;
@@ -89,10 +90,25 @@ public abstract class JwtUtils {
         JWSVerifier jwsVerifier = new MACVerifier(key);
         JWSObject jwsObject = JWSObject.parse(token);
         if (jwsObject.verify(jwsVerifier)) {
-            return jwsObject.getPayload();
+            Payload payload = jwsObject.getPayload();
+            checkExpiration(payload);
+            return payload;
         }
         // 验证token失败
         throw new BadJOSEException("验证token失败");
+    }
+
+    /**
+     * 校验 JWT 过期时间（若 Payload 中包含 exp 声明）
+     */
+    private static void checkExpiration(Payload payload) throws BadJOSEException {
+        Object exp = payload.toJSONObject().get(JWTClaimNames.EXPIRATION_TIME);
+        if (exp instanceof Number) {
+            long expirationMs = 1000L * ((Number) exp).longValue();
+            if (System.currentTimeMillis() > expirationMs) {
+                throw new BadJOSEException("The token has expired");
+            }
+        }
     }
 
     @SneakyThrows

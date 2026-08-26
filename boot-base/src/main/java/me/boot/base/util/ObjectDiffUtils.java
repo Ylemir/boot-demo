@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
-import me.boot.base.dto.FiledDifference;
+import me.boot.base.dto.FieldDifference;
 import org.apache.commons.lang3.builder.ReflectionDiffBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -36,26 +36,26 @@ public abstract class ObjectDiffUtils {
      * @param after  the object after the changes
      * @return a list of filed differences between the two objects
      */
-    public static List<FiledDifference> diff(@NonNull Object before, @NonNull Object after) {
+    public static List<FieldDifference> diff(@NonNull Object before, @NonNull Object after) {
         return diff(before, after, Collections.emptyList());
     }
 
-    public static <T> List<FiledDifference> diff2(@NonNull T before, @NonNull T after) {
+    public static <T> List<FieldDifference> diff2(@NonNull T before, @NonNull T after) {
         return diff2(before, after, Collections.emptyList());
     }
 
-    public static <T> List<FiledDifference> diff2(@NonNull T before, @NonNull T after,
+    public static <T> List<FieldDifference> diff2(@NonNull T before, @NonNull T after,
         Collection<String> ignoreProperties) {
         String[] array = ignoreProperties.toArray(new String[0]);
         return new ReflectionDiffBuilder<>(before, after,
             ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(array).build().getDiffs()
             .stream()
-            .map(item -> new FiledDifference(item.getFieldName(), item.getLeft(), item.getRight()))
+            .map(item -> new FieldDifference(item.getFieldName(), item.getLeft(), item.getRight()))
             .collect(Collectors.toList());
     }
 
 
-    public static List<FiledDifference> diff(@NonNull Object before, @NonNull Object after,
+    public static List<FieldDifference> diff(@NonNull Object before, @NonNull Object after,
         Collection<String> ignoreProperties) {
         if (!CommonUtils.isAllJavaBean(before, after)) {
             throw new IllegalArgumentException("The two objects must be JavaBean");
@@ -76,12 +76,12 @@ public abstract class ObjectDiffUtils {
     }
 
 
-    public static List<FiledDifference> diff(@NonNull Map<String, ?> before,
+    public static List<FieldDifference> diff(@NonNull Map<String, ?> before,
         @NonNull Map<String, ?> after) {
         MapDifference<String, Object> difference = Maps.difference(before, after);
         Map<String, ValueDifference<Object>> entriesDiffering = difference.entriesDiffering();
         return entriesDiffering.entrySet().stream().map(
-            entry -> new FiledDifference(entry.getKey(), entry.getValue().leftValue(),
+            entry -> new FieldDifference(entry.getKey(), entry.getValue().leftValue(),
                 entry.getValue().rightValue())).collect(Collectors.toList());
     }
 

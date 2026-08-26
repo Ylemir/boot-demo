@@ -5,14 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * FiledDifference
+ * field difference
  *
  * @since 2024/01/07
  **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FiledDifference {
+public class FieldDifference {
 
     private String property;
 
