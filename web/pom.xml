@@ -26,11 +26,11 @@
     <!--      <version>${project.version}</version>-->
     <!--    </dependency>-->
 
-    <!-- <dependency> -->
-    <!--   <groupId>me.boot</groupId> -->
-    <!--   <artifactId>data-redisson</artifactId> -->
-    <!--   <version>${project.version}</version> -->
-    <!-- </dependency> -->
+    <dependency>
+      <groupId>me.boot</groupId>
+      <artifactId>boot-base</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
 
     <dependency>

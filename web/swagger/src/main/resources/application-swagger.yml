@@ -4,13 +4,15 @@ spring:
     version: @project.version@
     description: Spring web demo app
 
-
 springdoc:
   api-docs:
     enabled: true
   override-with-generic-response: false
   writer-with-order-by-keys: true
   default-support-form-data: true
+
+  # paths-to-match: /**
+  # packages-to-scan: me.boot
 
   swagger-ui:
     enabled: true
@@ -26,18 +28,33 @@ springdoc:
 
   # management actuator
   show-actuator: true
-#  paths-to-match: /**
-#  packages-to-scan: me.boot
-#  use-management-port: true
+  # use-management-port: true
 
 management:
   server:
     port: 9090
+    base-path: /actuator
   endpoints:
     web:
       exposure:
-        include: '*'
-#        openapi, swagger-ui, health, info, env, mappings, beans, features
+        include: "*"
+        # openapi, swagger-ui, health, info, env, mappings, beans, features
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "GET,POST"
+        allowed-headers: "*"
+        # allow-credentials: true
+        max-age: 3600
+
   endpoint:
     health:
       show-details: always
+
+  observations:
+    annotations:
+      enabled: true
+    key-values:
+      application: ${spring.application.name}
+  metrics:
+    tags:
+      application: ${spring.application.name}

@@ -2,6 +2,7 @@ package me.boot.web.mvc.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.google.common.collect.ImmutableMap;
+import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -69,10 +70,11 @@ public class HttpBinController {
     }
 
     @Operation(summary = "请求体")
+    @Observed(name = "bin.map", contextualName = "misc", lowCardinalityKeyValues = {"http-bin",
+        "PUT"})
     @PutMapping(value = "map")
     public String map(@Valid @RequestBody MiscData body) {
-        // return httpBinService.put(body).toString();
-        System.err.println(body);
+        log.warn("misc data: {}", body);
         return jwtService.sign(ImmutableMap.of("body", body.getUrl()));
     }
 
@@ -83,6 +85,5 @@ public class HttpBinController {
         "500"}) @Parameter(description = "Status code", example = "200") @PathVariable String code) {
         return httpBinService.delete(code);
     }
-
 
 }

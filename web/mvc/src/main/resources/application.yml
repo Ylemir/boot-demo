@@ -84,19 +84,6 @@ spring:
             revision_type_field_name: revision_type
             store_data_at_delete: true
 
-
-management:
-  server:
-    port: 9090
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-#        openapi, swagger-ui, health, info, env, mappings, beans, features
-  endpoint:
-    health:
-      show-details: always
-
 validation:
   bin:
     max: 3
@@ -106,4 +93,4 @@ logging:
     root: info
     web: debug
     me.boot: debug
-#    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
+    # org.springframework.web.filter.CommonsRequestLoggingFilter: debug

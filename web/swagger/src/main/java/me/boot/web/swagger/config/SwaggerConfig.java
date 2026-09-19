@@ -35,7 +35,6 @@ public class SwaggerConfig {
     @Data
     @ConfigurationProperties("spring.application")
     public static class AppInfo {
-
         private String name;
         private String description;
         private String version;
